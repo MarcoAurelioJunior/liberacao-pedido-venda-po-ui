@@ -1,15 +1,180 @@
-<header id="description">
-    <po-info
-            p-label="Monitor Umov.me"
-            p-value="Nesta tela você terá acesso a todas as informações da desmontagem, incluindo status e o momento atual em que se encontra a peça">
-    </po-info>
-</header>
+<!-- <div class="po-row">
+    <po-button-group
+        class="po-mb-2 po-md-10"
+        [p-buttons]="buttonGrp"
+        p-toggle="none"
+        >
+    </po-button-group>
 
-<section id="monitor">
-    <po-table
-    [p-items]="items"
-    [p-columns]="columns"
-    [p-actions]="actions"
-    [p-actions-right]="true"
-    ></po-table>
-</section>
+    <po-button class="po-md-2"
+        p-icon="po-icon-filter"
+        p-label="Filtrar Colunas"
+        (p-click)="modalFiltros.open()"
+    ></po-button>
+</div> -->
+
+
+<div class="col1">
+
+    <po-page-slide #pageSlide p-title="Progresso Atual">
+        <po-progress [p-show-percentage]="true" [p-value]="25" p-text="Pedidos Aguardando Separação" class="po-md-12" style="--color-progress-bar-background-color-default: rgb(161, 24, 19);" ></po-progress>
+        <po-progress [p-show-percentage]="true" [p-value]="25" p-text="Pedidos Separados" class="po-md-12" style="--color-progress-bar-background-color-default: rgb(224, 165, 35);"></po-progress>
+        <po-progress [p-show-percentage]="true" [p-value]="25" p-text="Pedidos Finalizados" class="po-md-12" style="--color-progress-bar-background-color-default: rgb(14, 124, 75);"></po-progress>
+
+        <po-widget
+            class="po-md-12 po-mt-2"
+            [p-height]="350">
+
+            <po-chart
+                class="po-md-12"
+                [p-height]="330"
+                [p-series]="[
+                    { label: 'Aguardando', data: 100 },
+                    { label: 'Separados', data: 10 },
+                    { label: 'Finalizados', data: 50 }
+                ]"
+                >
+            </po-chart>
+        </po-widget>
+    </po-page-slide>
+
+    <po-page-slide #pageSlide2 p-title="Lista completa">
+
+        <po-widget class="po-md-12">
+            <po-badge class="po-md-1" p-color="color-07"></po-badge>
+            <p class="po-font-subtitle po-text-center po-md-11">{{titleIncresed}}</p>
+        </po-widget>
+
+        <po-container class="po-md-12">
+            @for (item of filteredItems; track $index) {
+                @switch (item.status) {
+                    @case ("0"){
+                        <p class="po-text-center" style="font-size: 23px; margin-bottom: 30px;">Pedido <span class="po-font-text-bold" style="font-size: 20px;">{{item.pedido}}</span> | Cliente {{item.cliente}} - Status: Aguardando</p>
+
+                    }
+                    @case ("2"){
+                        <p class="po-text-center" style="font-size: 23px; margin-bottom: 30px;">Pedido <span class="po-font-text-bold" style="font-size: 20px;">{{item.pedido}}</span> | Cliente {{item.cliente}} - Status: Em Separação</p>
+
+                    }
+                    @case ("9"){
+                        <p class="po-text-center" style="font-size: 23px; margin-bottom: 30px;">Pedido <span class="po-font-text-bold" style="font-size: 20px;">{{item.pedido}}</span> | Cliente {{item.cliente}} - Status: Finalizado</p>
+
+                    }
+                    @default {
+                        <p class="po-text-center" style="font-size: 23px; margin-bottom: 30px;">Pedido <span class="po-font-text-bold" style="font-size: 20px;">{{item.pedido}}</span> | Cliente {{item.cliente}} - Status: Desconhecido</p>
+
+                    }
+                }
+            }
+        </po-container>
+        
+    </po-page-slide>
+
+    <po-modal
+        #modalFiltros
+        p-title="Filtrar colunas"
+        [p-secondary-action]="secundaryAct"
+        [p-primary-action]="primaryAct"
+        >
+
+        <po-checkbox-group
+            name="poCheck"
+            p-label="Colunas visíveis"
+            [p-options]="[
+                { value: 'Aguardando Separação', label: 'Aguardando Separação' },
+                { value: 'Separando', label: 'Separando' },
+                { value: 'Separação Final', label: 'Separação Final' },
+                { value: 'Embalando', label: 'Embalando' },
+                { value: 'Embalando Final', label: 'Embalando Final' },
+                { value: 'Geração de Nota', label: 'Geração de Nota' },
+                { value: 'Impressão de Nota', label: 'Impressão de Nota' },
+                { value: 'Embarcado', label: 'Embarcado' },
+                { value: 'Embarque Finalizado', label: 'Embarque Finalizado' },
+            ]"
+            [p-disabled]="disabledCheck"
+            (p-change)="filterChanged($event)"
+            >
+        </po-checkbox-group>
+    </po-modal>
+
+    <po-modal
+        #modalDet
+        p-title="Detalhes"
+        p-size="auto">
+    </po-modal>
+
+    <div id="view-status">
+        <po-widget class="po-md-3" style="--background:rgb(180, 180, 233);" p-primary-label="Detalhes" (p-primary-action)="act1()">
+            <div class="po-font-title po-text-center" style="font-size: 25px;">Total Pedidos</div>
+            <div class="po-font-subtitle po-text-center">567 Pedidos</div>
+        </po-widget>
+    
+        <po-widget class="po-md-3" style="--background:rgb(253, 141, 141);" p-primary-label="Detalhes" (p-primary-action)="act2()">
+            <div class="po-font-title po-text-center" style="font-size: 25px;">Aguard. Separação</div>
+            <div class="po-font-subtitle po-text-center">305 Pedidos</div>
+        </po-widget>
+    
+        <po-widget class="po-md-3" style="--background:rgb(245, 201, 172);" p-primary-label="Detalhes" (p-primary-action)="act3()">
+            <div class="po-font-title po-text-center" style="font-size: 25px;">Em Separação</div>
+            <div class="po-font-subtitle po-text-center">102 Pedidos</div>
+        </po-widget>
+    
+        <po-widget class="po-md-3" style="--background:rgb(180, 233, 202);" p-primary-label="Detalhes" (p-primary-action)="act4()">
+            <div class="po-font-title po-text-center" style="font-size: 25px;">Finalizados</div>
+            <div class="po-font-subtitle po-text-center">49 Pedidos</div>
+        </po-widget>
+    </div>
+
+    
+
+    <!-- <po-progress [p-value]="25" p-size="large" [p-show-percentage]="true" class="po-md-12 po-mt-4"></po-progress> -->
+
+
+    <po-widget class="po-md-12 po-mt-1 widg" style="--background: #85BC40; --border-color:#666666; " >
+
+        <div class="po-row">
+            <po-widget [class]="class" id="column-1" style="--background:#666666;" >
+                <po-badge class="po-md-1" p-color="color-07"></po-badge>
+                <p class="po-font-subtitle po-text-center po-md-11" >Aguardando Separação</p>
+            </po-widget>
+            <po-widget [class]="class" id="column-2" style="--background:#666666;" >
+                <po-badge class="po-md-1" p-color="color-08"></po-badge>
+                <p class="po-font-subtitle po-text-center po-md-11">Separado</p>
+            </po-widget>
+            <po-widget [class]="class" id="column-3" style="--background:#666666;" >
+                <po-badge class="po-md-1" p-color="color-10"></po-badge>
+                <p class="po-font-subtitle po-text-center po-md-11">Finalizado</p>
+            </po-widget>
+        </div>
+
+        <div class="po-row">
+            <po-container class="po-md-4" [p-no-border]="true">
+                @for (item of filteredItems; track $index) {
+                    @if (item.status === "0") {
+                        <p class="po-text-center po-md-12" style="font-size: 23px; margin-bottom: 30px;"><span class="po-font-text-bold" (click)="tst($event)" style="font-size: 30px; cursor: pointer;">{{item.pedido}}</span></p>
+                    }
+                }
+            </po-container>
+
+            <po-container class="po-md-4" [p-no-border]="true">
+                @for (item of filteredItems; track $index) {
+                    @if (item.status === "2") {
+                        <p class="po-text-center po-md-12" style="font-size: 23px; margin-bottom: 30px;"><span class="po-font-text-bold" (click)="tst($event)" style="font-size: 30px; cursor: pointer;">{{item.pedido}}</span></p>
+                    }
+                }
+            </po-container>
+        
+            <po-container class="po-md-4" [p-no-border]="true">
+            
+                @for (item of filteredItems; track $index) {
+                    @if (item.status === "9") {
+                        <p class="po-text-center po-md-12" style="font-size: 23px; margin-bottom: 30px;"><span class="po-font-text-bold" (click)="tst($event)" style="font-size: 30px; cursor: pointer;">{{item.pedido}}</span></p>
+                    }
+                }
+            </po-container>
+        </div>
+  
+    </po-widget>
+
+</div>
+

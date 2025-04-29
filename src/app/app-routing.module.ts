@@ -2,21 +2,22 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PoPageDynamicTableComponent } from '@po-ui/ng-templates';
 import { MonitorComponent } from './Components/monitor/monitor.component';
-import { DashComponent } from './Components/dash/dash.component';
+import { ErrorPageComponent } from './Components/error-page/error-page.component';
+import { MasterPageComponent } from './Components/master-page/master-page.component';
+import { authGuard } from './auth.guard';
+import { DetalhesComponent } from './Components/detalhes/detalhes.component';
 
-const routes: Routes = [
-  {
-    path: 'browse',
-    component: MonitorComponent
-  },
-  {
-    path: 'dash',
-    component: DashComponent
-  }
-];
+let rotas: Routes = [];
+
+rotas = 
+  [
+    { path: '', component: MonitorComponent },
+    { path: 'browse', component: MonitorComponent },
+    { path: 'detail', component: DetalhesComponent },
+  ]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(rotas)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -1,5 +1,5 @@
 {
-  "name": "monitor-zaq",
+  "name": "fat-po",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -19,6 +19,8 @@
     "@angular/platform-browser-dynamic": "~17.3.9",
     "@angular/platform-server": "~17.3.9",
     "@angular/router": "~17.3.9",
+    "@animaliads/animalia-icon": "^1.0.3",
+    "@mrodrig/json-2-csv-cli": "^5.5.9",
     "@po-ui/ng-components": "^17.1.0",
     "@po-ui/ng-templates": "^17.1.0",
     "@po-ui/style": "^17.1.0",
@@ -26,10 +28,15 @@
     "@totvs/po-theme": "^17.1.0",
     "@totvs/protheus-lib-core": "^17.3.4",
     "core-js": "^3.13.0",
+    "file-saver": "^2.0.5",
+    "json2csv": "^6.0.0-alpha.2",
+    "ngx-filesaver": "^19.0.0",
+    "react-icons": "^5.5.0",
     "rxjs": "~7.8.1",
     "rxjs-compat": "^6.6.3",
     "subsink": "^1.0.2",
     "tslib": "^2.6.2",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.14.4"
   },
   "devDependencies": {

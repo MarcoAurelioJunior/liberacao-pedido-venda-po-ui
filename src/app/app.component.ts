@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { ProtheusLibCoreModule } from '@totvs/protheus-lib-core';
-import { ProAppConfigService } from '@totvs/protheus-lib-core';
-import { PoInfoComponent, PoMenuItem } from '@po-ui/ng-components';
+import { Component, inject } from '@angular/core';
+import { ProAppConfigService, ProJsToAdvplService, ProSessionInfoService } from '@totvs/protheus-lib-core';
+import { PoBreadcrumb, PoInfoComponent, PoMenuItem, PoNotificationService, PoPageAction } from '@po-ui/ng-components';
 import { ProThreadInfoService } from '@totvs/protheus-lib-core';
 import { ProUserInfo } from '@totvs/protheus-lib-core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -13,46 +14,95 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
 
+  endPointProt:string = ''
   public user: any
+  //public apiBaseUrl: any
+
+  private proAppConfigService = inject(ProAppConfigService)
+  
+  
 
   constructor(
-    private proAppConfigService: ProAppConfigService,
     private infoSerivce: ProThreadInfoService,
-    private router: Router
-  ){}
+    private proJsToAdvplService: ProJsToAdvplService,
+    private poNotification: PoNotificationService,
+    private proSessionInfoService: ProSessionInfoService,
+    private router: Router,
+    private http: HttpClient
+  ){
 
-  readonly menus: Array<PoMenuItem> = [
-    { label: 'Monitor', action: this.onClick.bind(this) },
-    { label: 'DashBoard', action: this.dashClick.bind(this) },
-    { label: 'Sair', action: this.sair.bind(this) },
-  ];
+    if (this.proAppConfigService.insideProtheus()) {
+      this.proAppConfigService.loadAppConfig();
 
-  private onClick() {
-    this.router.navigate(['/', 'browse'])
-  }
-
-  private dashClick(){
-    this.router.navigate(['/', 'dash'])
-  }
-
-  private sair(){
-    if(!this.proAppConfigService.insideProtheus()){
-      alert("Clique não veio do Protheus")
     }else{
-      this.proAppConfigService.callAppClose()
+      //this.poNotification.error("Não está no Protheus");
     }
   }
 
-  ngOnInit(){
-    this.user = this.getUserInfo()
+  async loadAppConfig(): Promise<string> {
+    try {
+      const response = await firstValueFrom(this.http.get<any>('assets/data/appConfig.json'));
+
+      this.endPointProt = response.api_baseUrl;
+      return response.api_baseUrl
+    } catch (error) {
+      //console.error('Error loading app config', error);
+      throw error; // You might want to handle the error appropriately in your application
+    }
   }
 
-  getUserInfo(): any {
-    this.infoSerivce.getUserInfoThread().subscribe({
-      next: (res: ProUserInfo) => {
-        return res.id
-      }
-    });
+  menus: Array<PoMenuItem> = [
+    {
+      label: 'Cadastro',
+      action: this.dashClick.bind(this),
+      icon: 'po-icon po-icon-home',
+      shortLabel: 'DashBoard',
+    },
+    {
+      label: 'Sair',
+      action: this.sair.bind(this),
+      icon: 'po-icon po-icon-exit',
+      shortLabel: 'Sair',
+    },
+
+  ];
+
+  private dashClick(){
+    this.router.navigate(['/', 'browse'])
   }
+
+  private sair(){
+    if(this.proAppConfigService.insideProtheus()){
+      this.proAppConfigService.callAppClose(false);
+    }else{
+      localStorage.removeItem('username')
+      this.router.navigate(['/', 'login'])
+
+    }
+  }
+
+  ngOnInit(): void {
+    this.router.navigate(['/', 'browse'])
+  }
+
+  // async ping(){
+  //   try {
+  //     const data = await this.servicePing.getParam().subscribe({
+  //       next: (response) => {
+  //         console.log('Response:', response);
+  //       },
+  //       error: (error) => {
+  //         console.error('Error:', error);
+  //       },
+  //       complete: () => {
+  //         console.log('Request completed');
+  //       }
+
+  //     })
+  //   } catch (error) {
+  //     console.error('Error fetching parameters:', error);
+  //   }
+  // }
+
 
 }

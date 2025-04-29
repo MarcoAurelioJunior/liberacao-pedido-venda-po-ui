@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+
+.menu{
+    --background-color: #272727ea;
+}
+
+:root{
+    --color-menu-color-menu-item-text: #FAFAFA;
+    --color-menu-background-color-item-hover:#85BC40;
+    
+    --color-stepper-bar: #85BC40;
+    --color-stepper-bar-disabled: #85BC40;
+    --color-stepper-circle-active: #272727ea;
+    --color-stepper-circle-default: #272727ea;
+    --color-stepper-circle-disabled: #272727ea;
+}
+
+po-menu-item{
+    --color-hover: #FAFAFA;
+    --background-color-actived: #85BC40;
+    --background-color-pressed: #85BC40;
+}
+
+.headerMenu p{
+    color: #FAFAFA;
+}
+
+po-tabs,
+po-tab-button{
+    --background-item-selected: #85BC40;
+    --background-item-hover: #85BC40;
+    --color: black;
+    --color-hover: #FAFAFA;
+}
+
+po-modal{
+    --border-color: #85BC40;
+    --color-divider: #85BC40;
+}

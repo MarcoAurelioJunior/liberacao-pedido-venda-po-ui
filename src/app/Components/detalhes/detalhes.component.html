@@ -1,0 +1,26 @@
+<po-page-default
+    p-title=""
+    [p-breadcrumb]="breadcrumb">
+
+    <div class="po-row">
+        <po-dynamic-form
+            class="po-md-8"
+            [p-fields]="fields"
+            [p-value]="value" >
+        </po-dynamic-form>
+
+        <po-widget class="po-md-4" p-title="Histórico de Movimentações (KARDEX)" >
+            <po-table
+                p-hide-table-search="false"
+                [p-columns]="columns"
+                [p-height]="470"
+                [p-virtual-scroll]="true"
+                [p-infinite-scroll]="true">
+            </po-table>
+        </po-widget>
+    </div>
+    
+    
+</po-page-default>
+
+

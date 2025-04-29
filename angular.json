@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "monitor-zaq": {
+    "fat-po": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/monitor-zaq",
+            "outputPath": "dist/fat-po",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -59,13 +59,17 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
-                }
-              ]
+              "sourceMap": true
+            },
+            "protheus": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "protheusProd": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -74,12 +78,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "monitor-zaq:build:production",
-              "proxyConfig": "src/proxy.conf.js"
+              "buildTarget": "fat-po:build:production"
+
             },
             "development": {
-              "buildTarget": "monitor-zaq:build:development",
-              "proxyConfig": "src/proxy.conf.js"
+              "buildTarget": "fat-po:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -87,7 +90,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "monitor-zaq:build"
+            "buildTarget": "fat-po:build"
           }
         },
         "test": {
